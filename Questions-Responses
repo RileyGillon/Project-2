@@ -1,0 +1,615 @@
+how to get only one letter from a string
+I chose this prompt to tell me how to get the char for the string id
+how to put a string into an array
+I did this prompt to allow me to insert the other half of the allChips array
+
+
+
+Debugging
+cout << number << endl;
+cout << number1 << endl;
+
+To see if I got the right amount of __ and __
+
+How to print out an array
+
+void display() const {
+        cout << "Chip ID: " << id << ", Type: " << chipType << endl;
+    }
+
+Problem (int i = 0; i < numCommands; i++) had to change it to (int i = 0; i < (numCommands * 3) - 1; i++)
+
+Had trouble with figuring out how to add input1 and the rest into the array
+
+for(int i = 0; i < word2.length(); i++){
+            cout << word2[i];
+        }
+To see what was being coded
+
+____________________________________________________________________________________
+
+The code below was hard-coded to help me figure out exactly how the display method worked.
+
+____________________________________________________________________________________
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Item {
+    int value;
+    Item* first;  // Pointer to the first Item
+    Item* second; // Pointer to the second Item
+
+    Item(int val) : value(val), first(nullptr), second(nullptr) {}
+};
+
+int main() {
+    const int size = 3;
+    Item items[size] = { Item(1), Item(2), Item(3) };
+
+    // Make the first item point to the second and third items
+    items[0].first = &items[1];
+    items[0].second = &items[2];
+    
+    items[1].first = &items[0];
+    items[1].second = &items[2];
+    
+    items[2].first = &items[1];
+    items[2].second = &items[0];
+    
+    // Output to verify the pointers
+    for (int i = 0; i < size; ++i) {
+        std::cout << "Item " << i << ": value = " << items[i].value;
+        if (items[i].first) {
+            std::cout << ", first = " << items[i].first->value;
+        } else {
+            std::cout << ", first = nullptr";
+        }
+        
+        if (items[i].second) {
+            std::cout << ", second = " << items[i].second->value;
+        } else {
+            std::cout << ", second = nullptr";
+        }
+        
+        std::cout << std::endl;
+        
+        int sum = items[i].first->value + items[i].second->value;
+        items[i].value = sum;
+    }
+    
+//    std::cout << sum << std::endl;
+    
+    
+    return 0;
+}
+____________________________________________________________________________________
+
+The code below was hard-coded to help me figure out exactly how the display method worked.
+
+____________________________________________________________________________________
+
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Item {
+    string value;
+    Item* first;  // Pointer to the first Item
+    Item* second; // Pointer to the second Item
+    Item* output;
+
+    Item(string val) : value(val), first(nullptr), second(nullptr), output(nullptr) {}
+};
+
+
+
+int main() {
+    const int size = 6;
+    Item items[size] = { Item("I1"), Item("I2"), Item("I3"), Item("A1"), Item("M2"), Item("O5") };
+
+    // Make the first item point to the second and third items
+    items[0].output = &items[3];
+    items[1].output = &items[3];
+    items[2].output = &items[4];
+    
+    items[3].first = &items[0];
+    items[3].second = &items[1];
+    items[3].output = &items[4];
+    
+    items[4].first = &items[2];
+    items[4].second = &items[3];
+    items[4].output = &items[5];
+    
+    items[5].first = &items[4];
+    
+    // Output to verify the pointers
+    for (int i = 0; i < 3; ++i) {
+        std::cout << "Item " << i << ": value = " << items[i].value;
+        
+        if (items[i].output) {
+            std::cout << ", output = " << items[i].output->value;
+        } else {
+            std::cout << ", output = nullptr";
+        }
+        
+        std::cout << std::endl;
+    }
+    
+    // Output to verify the pointers
+    for (int i = 3; i < size - 1; ++i) {
+        std::cout << "Item " << i << ": value = " << items[i].value;
+        if (items[i].first) {
+            std::cout << ", first = " << items[i].first->value;
+        } else {
+            std::cout << ", first = nullptr";
+        }
+        
+        
+        if (items[i].second) {
+            std::cout << ", second = " << items[i].second->value;
+        } else {
+            std::cout << ", second = nullptr";
+        }
+        
+        if (items[i].output) {
+            std::cout << ", output = " << items[i].output->value;
+        } else {
+            std::cout << ", output = nullptr";
+        }
+        std::cout << std::endl;
+    }
+    
+    for (int i = size - 1; i < size; ++i) {
+        std::cout << "Item " << i << ": value = " << items[i].value;
+        if (items[i].first) {
+            std::cout << ", first = " << items[i].first->value;
+        } else {
+            std::cout << ", first = nullptr";
+        }
+        std::cout << std::endl;
+    }
+    
+    
+    return 0;
+}
+____________________________________________________________________________________
+
+The code below helped me figure out exactly how the display method worked.
+
+____________________________________________________________________________________
+
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Chip {
+private:
+    char chipType;      // Type of the chip (A: Addition, S: Subtraction, etc.)
+    string id;          // Unique identifier for the chip
+    Chip* input1;       // Pointer to the first input chip
+    Chip* input2;       // Pointer to the second input chip (can be NULL)
+    Chip* output;       // Pointer to the output chip (is NULL for output chips)
+    double inputValue;  // For the input chip
+
+public:
+    // Constructor
+    Chip(char type, const string& id) {
+        chipType = type;
+        this->id = id;
+        input1 = NULL;
+        input2 = NULL;
+        output = NULL;
+        inputValue = 0.0;
+    }
+
+    // Setters
+    void setInput1(Chip* inputChip) { input1 = inputChip; }
+    void setInput2(Chip* inputChip) { input2 = inputChip; }
+    void setOutput(Chip* outputChip) { output = outputChip; }
+
+    // Display method
+    void display() const {
+        cout << id << ", ";
+        if (chipType == 'I') {
+            cout <<"Output = " << output->getId() << endl;
+        }
+        else if (chipType == 'O'){
+            cout <<"Input 1 = " << endl;
+        }
+        else {
+            cout << "Input 1 = " << input1->getId() << ", Input 2 = " << input2->getId() << ", Output = " << output->getId() << endl;
+        }
+//        cout << "Chip ID: " << id << ", Type: " << chipType << endl;
+    }
+
+    string getId() const { return id; }
+    char getChipType() const { return chipType; }
+    Chip* getInput1() const { return input1; }
+    Chip* getInput2() const { return input2; }
+    Chip* getOutput() const { return output; }
+    double getInputValue() const { return inputValue; }
+
+    void setInputValue(double value) { inputValue = value; } // Set input value for input chips
+};
+
+int main() {
+    cout << "Enter the number of chips: " << endl;
+    int numChips;
+    cin >> numChips;
+
+    Chip** allChips = new Chip*[numChips];
+
+    for (int i = 0; i < numChips; i++) {
+        string chipInput;
+        cin >> chipInput;
+        allChips[i] = new Chip(chipInput[0], chipInput); // Create chip with type and ID
+    }
+
+    cout << "Enter the number of commands: " << endl;
+    int numCommands;
+    cin >> numCommands;
+
+    for (int i = 0; i < numCommands; i++) {
+        string chipId1, chipId2, chipId3;
+        cin >> chipId1 >> chipId2 >> chipId3;
+
+        Chip* chip1 = nullptr;
+        Chip* chip2 = nullptr;
+        Chip* chip3 = nullptr;
+
+        // Search for the chips by their IDs
+        for (int j = 0; j < numChips; j++) {
+            if (allChips[j]->getId() == chipId2) {
+                chip2 = allChips[j];
+            }
+            if (allChips[j]->getId() == chipId3) {
+                chip3 = allChips[j];
+            }
+            // If you need to also get chipId1, do it here.
+        }
+
+        // Set input/output connections
+        if (chip2 && chip3) {
+            chip2->setOutput(chip3); // Example connection
+            if (chip3->getInput1() == nullptr) {
+                chip3->setInput1(chip2); // Set input for chip3 if first input is NULL
+            } 
+            else {
+                chip3->setInput2(chip2); // Set input for chip3 if first input is already set
+            }
+        }
+
+        cout << "Connected " << chipId2 << " to " << chipId3 << endl;
+    }
+
+    cout << "***** Showing the connections that were established *****" << endl;
+
+    for (int i = 0; i < numChips; i++) {
+        allChips[i]->display();
+    }
+
+    // Clean up dynamically allocated memory
+    for (int i = 0; i < numChips; i++) {
+        delete allChips[i];
+    }
+    delete[] allChips; // Don't forget to free the array itself
+
+    return 0;
+}
+____________________________________________________________________________________
+
+
+cout « "Connected" «< chipId2 « " to" < chipId3 <<
+endl;
+
+
+terminate called after throwing an instance of 'std::invalid_argument'
+  what():  stoi
+Aborted
+
+
+if(chipId1 == "I"){
+            if(num == 12 || num == 5 || num == 8){
+                cout << "Happy " << chipId3 << endl;
+            }
+            else{
+                cout << "Sad" << endl;
+            }
+        }
+____________________________________________________________________________________
+
+The code below helped me figure out exactly how the compute method worked.
+
+____________________________________________________________________________________
+
+
+#include <iostream>
+
+class Component {
+public:
+    float inputValue;
+};
+
+char chipType;
+Component* input1;
+Component* input2;
+Component* output;
+float inputValue;
+
+void compute() {
+    switch (chipType) {
+        case 'A': // Addition
+            output->inputValue = input1->inputValue + input2->inputValue;
+            break;
+        case 'S': // Subtraction
+            output->inputValue = input1->inputValue - input2->inputValue;
+            break;
+        case 'M': // Multiplication
+            output->inputValue = input1->inputValue * input2->inputValue;
+            break;
+        case 'D': // Division
+            if (input2->inputValue != 0) {
+                output->inputValue = input1->inputValue / input2->inputValue;
+            } else {
+                std::cerr << "Error: Division by zero!" << std::endl;
+            }
+            break;
+        case 'N': // Negation
+            output->inputValue = -input1->inputValue;
+            break;
+        case 'I': // Input directly copied
+            output->inputValue = inputValue;
+            break;
+        case 'O': // Output becomes input1 value
+            inputValue = input1->inputValue;
+            break;
+        default:
+            std::cerr << "Error: Invalid chipType!" << std::endl;
+            break;
+    }
+}
+
+int main() {
+    // Example setup
+    Component comp1, comp2, compOut;
+    comp1.inputValue = 7;
+    comp2.inputValue = 5;
+    output = &compOut;
+    input1 = &comp1;
+    input2 = &comp2;
+    chipType = 'S'; // Addition operation
+    
+    compute();
+    
+    double temp1 = output->inputValue;
+    
+    std::cout << "Output value: " << temp1 << std::endl;
+    
+    comp1.inputValue = 8;
+    comp2.inputValue = 1;
+    output = &compOut;
+    input1 = &comp1;
+    input2 = &comp2;
+    chipType = 'A'; // Addition operation
+    
+    compute();
+    
+    double temp2 = output->inputValue;
+    
+    std::cout << "Output value: " << temp2 << std::endl;
+    
+    comp1.inputValue = temp2;
+    comp2.inputValue = temp1;
+    output = &compOut;
+    input1 = &comp1;
+    input2 = &comp2;
+    chipType = 'D'; // Addition operation
+    
+    compute();
+    
+    double temp3 = output->inputValue;
+    
+    std::cout << "Output value: " << temp3 << std::endl;
+
+    return 0;
+}
+____________________________________________________________________________________
+
+
+I am having trouble with getting the number to come out. The code below is helping me figure out that the compute() would only grab the inputs for the I’s and not the output for stuff like the output for “A100”.
+____________________________________________________________________________________ 
+
+#include <iostream>
+#include <string>
+using namespace std;
+
+class Chip {
+private:
+    char chipType;      // Type of the chip (A: Addition, S: Subtraction, etc.)
+    string id;          // Unique identifier for the chip
+    Chip* input1;       // Pointer to the first input chip
+    Chip* input2;       // Pointer to the second input chip (can be NULL)
+    Chip* output;       // Ptr to the output chip (is NULL for output chips)
+    double inputValue;  // For the input chip
+
+public:
+    // Constructor
+    Chip(char type, const string& id){
+        chipType = type;
+        this->id = id;
+        input1 = NULL;
+        input2 = NULL;
+        output = NULL;
+        inputValue = 0.0;
+    }
+
+    // Method to set inputs and outputs
+    void setInput1(Chip* inputChip){
+        if (input1 == NULL) {
+            input1 = inputChip;
+        } else {
+            cout << "Warning: " << id << " already has Input 1 connected!" << endl;
+        }
+    }
+
+    void setInput2(Chip* inputChip){
+        if (input2 == NULL) {
+            input2 = inputChip;
+        } else {
+            cout << "Warning: " << id << " already has Input 2 connected!" << endl;
+        }
+    }
+
+    void setOutput(Chip* outputChip){
+        if (output == NULL) {
+            output = outputChip;
+        } else {
+            cout << "Warning: " << id << " already has an output connected!" << endl;
+        }
+    }
+
+    void setInputValue(double value) {
+        inputValue = value;
+    }
+    
+    string getid() const { return id; }
+    char getChipType() const { return chipType; }
+    Chip* getInput1() const { return input1; }
+    Chip* getInput2() const { return input2; }
+    Chip* getOutput() const { return output; }
+//    double getInputValue() const { return inputValue; }
+
+    void compute(){
+        if (chipType == 'A') {
+            double result = input1->getInputValue() + input2->getInputValue();
+            cout << "Computing A(" << input1->getId() << " + " << input2->getId() << ") = " << result << endl;
+            output->setInputValue(result);
+        } else if (chipType == 'S') {
+            double result = input1->getInputValue() - input2->getInputValue();
+            cout << "Computing S(" << input1->getId() << " - " << input2->getId() << ") = " << result << endl;
+            output->setInputValue(result);
+        } else if (chipType == 'M') {
+            double result = input1->getInputValue() * input2->getInputValue();
+            cout << "Computing M(" << input1->getId() << " * " << input2->getId() << ") = " << result << endl;
+            output->setInputValue(result);
+        } else if (chipType == 'D') {
+            double result = input1->getInputValue() / input2->getInputValue();
+            cout << "Computing D(" << input1->getId() << " / " << input2->getId() << ") = " << result << endl;
+            output->setInputValue(result);
+        } else if (chipType == 'N') {
+            double result = -input1->getInputValue();
+            cout << "Computing N(-" << input1->getId() << ") = " << result << endl;
+            output->setInputValue(result);
+        } else if (chipType == 'I') {
+            output->setInputValue(getInputValue());
+        } else if (chipType == 'O') {
+            cout << "The output value from " << id << " is " << inputValue << endl;
+        }
+    }
+
+    void display() const {
+        cout << id << ", ";
+        if (chipType == 'I') {
+            cout <<"Output = " << output->getId() << endl;
+        }
+        else if (chipType == 'O'){
+            cout <<"Input 1 = " << input1->getId() << endl;
+        }
+        else if (chipType == 'N'){
+            cout << "Input 1 = " << input1->getId() << ", Input 2 = Nope" << ", Output = " << output->getId() << endl;
+        }
+        else {
+            cout << "Input 1 = " << input1->getId() << ", Input 2 = " << input2->getId() << ", Output = " << output->getId() << endl;
+        }
+    }
+
+    string getId() const { return id; }
+    double getInputValue() const { return inputValue; }
+};
+
+int main () {
+    int numChips;
+    Chip** allChips;
+    int numCommands;
+    string word1;
+
+    cout << "The number of chips" << endl;
+    cin >> numChips;
+
+    allChips = new Chip*[numChips];  // Dynamically allocate memory for chips
+
+    for (int i = 0; i < numChips; i++) {
+        cin >> word1;
+        allChips[i] = new Chip(word1[0], word1);  // Create chip objects based on type and id
+    }
+
+    cout << "Number of commands including input command and the output command" << endl;
+    cin >> numCommands;
+
+    for (int i = 0; i < numCommands; i++) {
+        string chipId1, chipId2, chipId3;
+        double num = 0.0;
+
+        if (i < numCommands - 1) {
+            cin >> chipId1 >> chipId2 >> chipId3;
+        } else {
+            cin >> chipId1 >> chipId2;
+        }
+
+        Chip* chip1 = nullptr;
+        Chip* chip2 = nullptr;
+        Chip* chip3 = nullptr;
+
+        // Search for the chips by their IDs
+        for (int j = 0; j < numChips; j++) {
+            if (allChips[j]->getId() == chipId2) {
+                chip2 = allChips[j];
+            }
+            if (allChips[j]->getId() == chipId3) {
+                chip3 = allChips[j];
+            }
+        }
+
+        // Set input/output connections or values
+        if (chipId1 == "I") {
+            num = stoi(chipId3);
+            chip2->setInputValue(num);
+        }
+
+        if (chip2 && chip3) {
+            chip2->setOutput(chip3); // Example connection
+            if (chip3->getInput1() == nullptr) {
+                chip3->setInput1(chip2); // Set input for chip3 if first input is NULL
+            } 
+            else {
+                chip3->setInput2(chip2); // Set input for chip3 if first input is already set
+            }
+        }
+
+        if (chipId1 == "O") {
+            cout << "Computation Starts" << endl;
+            for (int x = 0; x < numChips; x++) {
+                allChips[x]->compute();  // Perform computation on each chip
+            }
+        }
+    }
+
+    cout << "***** Showing the connections that were established" << endl;
+    for (int i = 0; i < numChips; i++) {
+        allChips[i]->display();
+    }
+
+    // Clean up dynamically allocated memory
+    for (int i = 0; i < numChips; i++) {
+        delete allChips[i];
+    }
+    delete[] allChips;
+
+    return 0;
+}
+
+
