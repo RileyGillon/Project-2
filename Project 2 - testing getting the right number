@@ -1,0 +1,446 @@
+#include <iostream>
+
+class Component {
+public:
+    float inputValue;
+};
+
+char chipType;
+Component* input1;
+Component* input2;
+Component* output;
+float inputValue;
+
+void compute() {
+    switch (chipType) {
+        case 'A': // Addition
+            output->inputValue = input1->inputValue + input2->inputValue;
+            break;
+        case 'S': // Subtraction
+            output->inputValue = input1->inputValue - input2->inputValue;
+            break;
+        case 'M': // Multiplication
+            output->inputValue = input1->inputValue * input2->inputValue;
+            break;
+        case 'D': // Division
+            if (input2->inputValue != 0) {
+                output->inputValue = input1->inputValue / input2->inputValue;
+            } else {
+                std::cerr << "Error: Division by zero!" << std::endl;
+            }
+            break;
+        case 'N': // Negation
+            output->inputValue = -input1->inputValue;
+            break;
+        case 'I': // Input directly copied
+            output->inputValue = inputValue;
+            break;
+        case 'O': // Output becomes input1 value
+            inputValue = input1->inputValue;
+            break;
+        default:
+            std::cerr << "Error: Invalid chipType!" << std::endl;
+            break;
+    }
+}
+
+int main() {
+    // Example setup
+    Component comp1, comp2, compOut;
+    comp1.inputValue = 7;
+    comp2.inputValue = 5;
+    output = &compOut;
+    input1 = &comp1;
+    input2 = &comp2;
+    chipType = 'S'; // Addition operation
+    
+    compute();
+    
+    double temp1 = output->inputValue;
+    
+    std::cout << "Output value: " << temp1 << std::endl;
+    
+    comp1.inputValue = 8;
+    comp2.inputValue = 1;
+    output = &compOut;
+    input1 = &comp1;
+    input2 = &comp2;
+    chipType = 'A'; // Addition operation
+    
+    compute();
+    
+    double temp2 = output->inputValue;
+    
+    std::cout << "Output value: " << temp2 << std::endl;
+    
+    comp1.inputValue = temp2;
+    comp2.inputValue = temp1;
+    output = &compOut;
+    input1 = &comp1;
+    input2 = &comp2;
+    chipType = 'D'; // Addition operation
+    
+    compute();
+    
+    double temp3 = output->inputValue;
+    
+    std::cout << "Output value: " << temp3 << std::endl;
+
+    return 0;
+}
+
+____________________________________________________________________________
+
+#include <iostream>
+#include <string>
+#include <utility> // for std::pair
+using namespace std;
+
+struct Item {
+    char chipType;
+    string value;
+    Item* first;  // Pointer to the first Item
+    Item* second; // Pointer to the second Item
+    Item* output;
+    float inputValue;
+
+    Item(char chipType, string val) : value(val), first(nullptr), second(nullptr), output(nullptr) {}
+};
+
+
+class Component {
+public:
+    float inputValue;
+};
+
+char chipType;
+Component* input1;
+Component* input2;
+Component* output;
+float inputValue;
+
+void compute(){
+        if (chipType == 'A') {
+            output->inputValue = input1->inputValue + input2->inputValue;
+        } else if (chipType == 'S') {
+            output->inputValue = input1->inputValue - input2->inputValue;
+        } else if (chipType == 'M') {
+            output->inputValue = input1->inputValue * input2->inputValue;
+        } else if (chipType == 'D') {
+            output->inputValue = input1->inputValue / input2->inputValue;
+        } else if (chipType == 'N') {
+            output->inputValue = -input1->inputValue;
+        } else if (chipType == 'I') {
+            output->inputValue = inputValue;
+        } else if (chipType == 'O') {
+            cout << "The output value from this circuit is ";
+        } 
+    }
+
+int main() {
+    const int size = 6;
+    Item items[size] = { Item('I', "I1"), Item('I', "I2"), Item('I', "I3"), Item('A', "A1"), Item('M', "M2"), Item('O', "O5") };
+    
+    
+    // Example setup
+    Component comp1, comp2, compOut;
+    comp1.inputValue = 8.0;
+    comp2.inputValue = 3.0;
+    output = &compOut;
+    input1 = &comp1;
+    input2 = &comp2;
+    chipType = 'S'; // Addition operation
+    
+    compute();
+    
+    double temp1 = output->inputValue;
+    
+    std::cout << "Output value: " << temp1 << std::endl;
+    
+    comp1.inputValue = 1.0;
+    comp2.inputValue = 7.0;
+    output = &compOut;
+    input1 = &comp1;
+    input2 = &comp2;
+    chipType = 'A';
+    
+    compute();
+    
+    double temp2 = output->inputValue;
+    
+    std::cout << "Output value: " << temp2 << std::endl;
+    
+    std::cout << temp1 + temp2 << std::endl;
+    
+    comp1.inputValue = temp2;
+    comp2.inputValue = temp1;
+    output = &compOut;
+    input1 = &comp1;
+    input2 = &comp2;
+    chipType = 'D';
+    
+    compute();
+    
+    double temp3 = output->inputValue;
+    
+    std::cout << "Output value: " << temp3 << std::endl;
+
+    return 0;
+}
+
+____________________________________________________________________________
+
+
+#include <iostream>
+#include <string>
+#include <utility> // for std::pair
+using namespace std;
+
+struct Item {
+    string id;
+    string value;
+    Item* first;  // Pointer to the first Item
+    Item* second; // Pointer to the second Item
+    Item* output;
+    float inputValue;
+
+    Item(string id, string val) : value(val), first(nullptr), second(nullptr), output(nullptr) {}
+};
+
+
+
+int main() {
+    const int size = 6;
+    Item items[size] = { Item("I", "I1"), Item("I", "I2"), Item("I", "I3"), Item("A", "A1"), Item("M", "M2"), Item("O", "O5") };
+
+    // Make the first item point to the second and third items
+    items[0].output = &items[3];
+    items[1].output = &items[3];
+    items[2].output = &items[4];
+    
+    items[3].first = &items[0];
+    items[3].second = &items[1];
+    items[3].output = &items[4];
+    
+    items[4].first = &items[2];
+    items[4].second = &items[3];
+    items[4].output = &items[5];
+    
+    items[5].first = &items[4];
+    
+    // Output to verify the pointers
+    for (int i = 0; i < 3; ++i) {
+        std::cout << "Item " << i << ": value = " << items[i].value;
+        
+        if (items[i].output) {
+            std::cout << ", output = " << items[i].output->value;
+        } else {
+            std::cout << ", output = nullptr";
+        }
+        
+        std::cout << std::endl;
+    }
+    
+    // Output to verify the pointers
+    for (int i = 3; i < size - 1; ++i) {
+        std::cout << "Item " << i << ": value = " << items[i].value;
+        if (items[i].first) {
+            std::cout << ", first = " << items[i].first->value;
+        } else {
+            std::cout << ", first = nullptr";
+        }
+        
+        if (items[i].second) {
+            std::cout << ", second = " << items[i].second->value;
+        } else {
+            std::cout << ", second = nullptr";
+        }
+        
+        if (items[i].output) {
+            std::cout << ", output = " << items[i].output->value;
+        } else {
+            std::cout << ", output = nullptr";
+        }
+        std::cout << std::endl;
+    }
+    
+    for (int i = size - 1; i < size; ++i) {
+        std::cout << "Item " << i << ": value = " << items[i].value;
+        if (items[i].first) {
+            std::cout << ", first = " << items[i].first->value;
+        } else {
+            std::cout << ", first = nullptr";
+        }
+        std::cout << std::endl;
+    }
+    
+    
+    return 0;
+}
+
+____________________________________________________________________________
+
+#include <iostream>
+#include <string>
+#include <utility> // for std::pair
+using namespace std;
+
+struct Item {
+    char chipType;
+    string value;
+    Item* first;  // Pointer to the first Item
+    Item* second; // Pointer to the second Item
+    Item* output;
+    float inputValue;
+
+    Item(char chipType, string val) : value(val), first(nullptr), second(nullptr), output(nullptr) {}
+};
+
+
+class Component {
+public:
+    float inputValue;
+};
+
+char chipType;
+Component* input1;
+Component* input2;
+Component* output;
+float inputValue;
+
+void compute(){
+        if (chipType == 'A') {
+            output->inputValue = input1->inputValue + input2->inputValue;
+        } else if (chipType == 'S') {
+            output->inputValue = input1->inputValue - input2->inputValue;
+        } else if (chipType == 'M') {
+            output->inputValue = input1->inputValue * input2->inputValue;
+        } else if (chipType == 'D') {
+            output->inputValue = input1->inputValue / input2->inputValue;
+        } else if (chipType == 'N') {
+            output->inputValue = -input1->inputValue;
+        } else if (chipType == 'I') {
+            output->inputValue = inputValue;
+        } else if (chipType == 'O') {
+            cout << "The output value from this circuit is ";
+        } 
+    }
+
+int main() {
+    const int size = 6;
+    Item items[size] = { Item('I', "I1"), Item('I', "I2"), Item('I', "I3"), Item('A', "A100"), Item('M', "M200"), Item('O', "O50") };
+    
+    items[0].inputValue = 12.0;
+    items[1].inputValue = 5.0;
+    items[2].inputValue = 8.0;
+    
+    items[0].output = &items[3];
+    items[1].output = &items[3];
+    items[2].output = &items[4];
+    
+    items[3].first = &items[0];
+    items[3].second = &items[1];
+    items[3].output = &items[4];
+    
+    items[4].first = &items[2];
+    items[4].second = &items[3];
+    items[4].output = &items[5];
+    
+    items[5].first = &items[4];
+    
+
+    
+    // Example setup
+    Component comp1, comp2, compOut;
+    comp1.inputValue = 12.0;
+    comp2.inputValue = 5.0;
+    output = &compOut;
+    input1 = &comp1;
+    input2 = &comp2;
+    chipType = 'A'; // Addition operation
+    
+    compute();
+    
+    double temp1 = output->inputValue;
+    
+//    std::cout << "Output value: " << temp1 << std::endl;
+    
+    comp1.inputValue = 8.0;
+    comp2.inputValue = 17.0;
+    output = &compOut;
+    input1 = &comp1;
+    input2 = &comp2;
+    chipType = 'M';
+    
+    compute();
+    
+    double temp2 = output->inputValue;
+    
+//    std::cout << "Output value: " << temp2 << std::endl;
+    
+//    std::cout << temp1 + temp2 << std::endl;
+    
+    comp1.inputValue = temp2;
+    comp2.inputValue = temp1;
+    output = &compOut;
+    input1 = &comp1;
+    input2 = &comp2;
+    chipType = 'O';
+    
+    compute();
+    
+    double temp3 = output->inputValue;
+    
+    std::cout << temp3 << std::endl;
+    
+    // Output to verify the pointers
+    for (int i = 0; i < 3; ++i) {
+        std::cout << items[i].value;
+        
+        if (items[i].output) {
+            std::cout << ", Output = " << items[i].output->value;
+        } else {
+            std::cout << ", output = nullptr";
+        }
+        
+        std::cout << std::endl;
+    }
+    
+    // Output to verify the pointers
+    for (int i = 3; i < size - 1; ++i) {
+        std::cout << items[i].value;
+        if (items[i].first) {
+            std::cout << ", Input 1 = " << items[i].first->value;
+        } else {
+            std::cout << ", first = nullptr";
+        }
+        
+        if (items[i].second) {
+            std::cout << ", Input 2 = " << items[i].second->value;
+        } else {
+            std::cout << ", second = nullptr";
+        }
+        
+        if (items[i].output) {
+            std::cout << ", Output = " << items[i].output->value;
+        } else {
+            std::cout << ", output = nullptr";
+        }
+        std::cout << std::endl;
+    }
+    
+    for (int i = size - 1; i < size; ++i) {
+        std::cout << items[i].value;
+        if (items[i].first) {
+            std::cout << ", Input 1 = " << items[i].first->value;
+        } else {
+            std::cout << ", first = nullptr";
+        }
+        std::cout << std::endl;
+    }
+    
+    
+    return 0;
+}
+
+
