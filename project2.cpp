@@ -102,7 +102,7 @@ public:
             cout <<"Input 1 = " << input1->getId() << endl;
         }
         else if (chipType == 'N'){
-            cout << "Input 1 = " << input1->getId() << ", Input 2 = Nope" << ", Output = " << output->getId() << endl;
+            cout << "Input 1 = " << input1->getId() << ", Input 2 = None" << ", Output = " << output->getId() << endl;
         }
         else {
             cout << "Input 1 = " << input1->getId() << ", Input 2 = " << input2->getId() << ", Output = " << output->getId() << endl;
