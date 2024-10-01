@@ -104,6 +104,9 @@ public:
         else if (chipType == 'N'){
             cout << "Input 1 = " << input1->getId() << ", Input 2 = None" << ", Output = " << output->getId() << endl;
         }
+        else if (output->getId() == "O50"){
+            cout << "Input 1 = " << input1->getId() << ", Input 2 = " << input2->getId() << ", Output = O50" << endl;
+        }
         else {
             cout << "Input 1 = " << input1->getId() << ", Input 2 = " << input2->getId() << ", Output = " << output->getId() << endl;
         }
