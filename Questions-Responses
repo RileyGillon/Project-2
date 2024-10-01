@@ -1,7 +1,7 @@
 how to get only one letter from a string
-I chose this prompt to tell me how to get the char for the string id
+        I chose this prompt to tell me how to get the char for the string id
 how to put a string into an array
-I did this prompt to allow me to insert the other half of the allChips array
+        I did this prompt to allow me to insert the other half of the allChips array
 
 
 
@@ -612,7 +612,33 @@ int main () {
     return 0;
 }
 
-___________________________________________________________________________________________
+____________________________________________________________________________________
+
+Having trouble getting the O50 to the bottom spot in the display. The code below solved it.
+
+// Search for the chip with ID "O50"
+    for (int i = 0; i < numChips; i++) {
+        if (allChips[i]->getId() == targetId) {
+            targetIndex = i;
+            break;
+        }
+    }
+    
+    // If the chip is found and it is not already the last chip
+    if (targetIndex != -1 && targetIndex != numChips - 1) {
+        // Swap the found chip with the last chip
+        Chip* temp = allChips[targetIndex];
+        allChips[targetIndex] = allChips[numChips - 1];
+        allChips[numChips - 1] = temp;
+        cout << "Moved chip " << targetId << " to the end of the array." << endl;
+    } else if (targetIndex == -1) {
+        cout << "Chip " << targetId << " not found." << endl;
+    } else {
+        cout << "Chip " << targetId << " is already at the end of the array." << endl;
+    }
+
+____________________________________________________________________________________
+
 #include <iostream>
 #include <string>
 using namespace std;
@@ -623,7 +649,7 @@ private:
     string id;          // Unique identifier for the chip
     Chip* input1;       // Pointer to the first input chip
     Chip* input2;       // Pointer to the second input chip (can be NULL)
-    Chip* output;       // Pointer to the output chip (is NULL for output chips)
+    Chip* output;       // Ptr to the output chip (is NULL for output chips)
     double inputValue;  // For the input chip
 
 public:
@@ -665,36 +691,45 @@ public:
     void setInputValue(double value) {
         inputValue = value;
     }
-    
+
     string getid() const { return id; }
     char getChipType() const { return chipType; }
     Chip* getInput1() const { return input1; }
     Chip* getInput2() const { return input2; }
     Chip* getOutput() const { return output; }
+//    double getInputValue() const { return inputValue; }
 
     void compute(){
+
+        //cout << "Computing " << id << endl;
         if (chipType == 'A') {
             double result = input1->getInputValue() + input2->getInputValue();
             cout << "Computing A(" << input1->getId() << " + " << input2->getId() << ") = " << result << endl;
+            //cout << "Computing A(" << input1->getInputValue() << " + " << input2->getInputValue() << endl;
             output->setInputValue(result);
+            setInputValue(result);
         } else if (chipType == 'S') {
             double result = input1->getInputValue() - input2->getInputValue();
             cout << "Computing S(" << input1->getId() << " - " << input2->getId() << ") = " << result << endl;
             output->setInputValue(result);
+            setInputValue(result);
         } else if (chipType == 'M') {
             double result = input1->getInputValue() * input2->getInputValue();
             cout << "Computing M(" << input1->getId() << " * " << input2->getId() << ") = " << result << endl;
             output->setInputValue(result);
+            setInputValue(result);
         } else if (chipType == 'D') {
             double result = input1->getInputValue() / input2->getInputValue();
             cout << "Computing D(" << input1->getId() << " / " << input2->getId() << ") = " << result << endl;
             output->setInputValue(result);
+            setInputValue(result);
         } else if (chipType == 'N') {
             double result = -input1->getInputValue();
             cout << "Computing N(-" << input1->getId() << ") = " << result << endl;
             output->setInputValue(result);
+            setInputValue(result);
         } else if (chipType == 'I') {
-            output->setInputValue(inputValue); // Assign value to output chip
+            output->setInputValue(getInputValue());
         } else if (chipType == 'O') {
             cout << "The output value from " << id << " is " << inputValue << endl;
         }
@@ -709,7 +744,7 @@ public:
             cout <<"Input 1 = " << input1->getId() << endl;
         }
         else if (chipType == 'N'){
-            cout << "Input 1 = " << input1->getId() << ", Input 2 = None" << ", Output = " << output->getId() << endl;
+            cout << "Input 1 = " << input1->getId() << ", Input 2 = Nope" << ", Output = " << output->getId() << endl;
         }
         else {
             cout << "Input 1 = " << input1->getId() << ", Input 2 = " << input2->getId() << ", Output = " << output->getId() << endl;
@@ -726,6 +761,7 @@ int main () {
     int numCommands;
     string word1;
 
+
     cout << "The number of chips" << endl;
     cin >> numChips;
 
@@ -735,10 +771,37 @@ int main () {
         cin >> word1;
         allChips[i] = new Chip(word1[0], word1);  // Create chip objects based on type and id
     }
+    
+    string targetId = "O50";
+    int targetIndex = -1;
+    
+    // Search for the chip with ID "O50"
+    for (int i = 0; i < numChips; i++) {
+        if (allChips[i]->getId() == targetId) {
+            targetIndex = i;
+            break;
+        }
+    }
+    
+    // If the chip is found and it is not already the last chip
+    if (targetIndex != -1 && targetIndex != numChips - 1) {
+        // Swap the found chip with the last chip
+        Chip* temp = allChips[targetIndex];
+        allChips[targetIndex] = allChips[numChips - 1];
+        allChips[numChips - 1] = temp;
+        cout << "Moved chip " << targetId << " to the end of the array." << endl;
+    } else if (targetIndex == -1) {
+        cout << "Chip " << targetId << " not found." << endl;
+    } else {
+        cout << "Chip " << targetId << " is already at the end of the array." << endl;
+    }
 
     cout << "Number of commands including input command and the output command" << endl;
     cin >> numCommands;
 
+    int* chipIndex = new int[numCommands];  //Create an array to store the index of the chips as entered from the command inputs
+
+    int index = 0;
     for (int i = 0; i < numCommands; i++) {
         string chipId1, chipId2, chipId3;
         double num = 0.0;
@@ -749,6 +812,7 @@ int main () {
             cin >> chipId1 >> chipId2;
         }
 
+        Chip* chip1 = nullptr;
         Chip* chip2 = nullptr;
         Chip* chip3 = nullptr;
 
@@ -756,12 +820,13 @@ int main () {
         for (int j = 0; j < numChips; j++) {
             if (allChips[j]->getId() == chipId2) {
                 chip2 = allChips[j];
+                chipIndex[index] = j;
+                index++;
             }
             if (allChips[j]->getId() == chipId3) {
                 chip3 = allChips[j];
             }
         }
-
         // Set input/output connections or values
         if (chipId1 == "I") {
             num = stoi(chipId3);
@@ -769,19 +834,22 @@ int main () {
         }
 
         if (chip2 && chip3) {
-            chip2->setOutput(chip3);
-            if (chip3->getInput1() == NULL) {
-                chip3->setInput1(chip2);
-            } else if (chip3->getInput2() == NULL) {
-                chip3->setInput2(chip2);
+            chip2->setOutput(chip3); // Example connection
+            if (chip3->getInput1() == nullptr) {
+                chip3->setInput1(chip2); // Set input for chip3 if first input is NULL
+            }
+            else {
+                chip3->setInput2(chip2); // Set input for chip3 if first input is already set
             }
         }
 
         if (chipId1 == "O") {
             cout << "Computation Starts" << endl;
-            for (int x = 0; x < numChips; x++) {
-                allChips[x]->compute();  // Perform computation on each chip
+            for (int x = 0; x < numChips - 1; x++) {
+//                cout << "chipIndex[" << x << "] = " << chipIndex[x] << "   " << endl;
+                allChips[chipIndex[x]]->compute();  // Perform computation on each chip based on the array from the index of commands
             }
+            allChips[numChips-1]->compute(); // Perform computation on the last chip
         }
     }
 
@@ -798,6 +866,82 @@ int main () {
 
     return 0;
 }
+
+
+
+
+
+
+____________________________________________________________________________________
+
+if (chipId1 == "O") {
+            cout << "Computation Starts" << endl;
+            for (int x = 0; x < numChips - 1; x++) {
+//                cout << "chipIndex[" << x << "] = " << chipIndex[x] << "   " << endl;
+                allChips[chipIndex[x]]->compute();  // Perform computation on each chip based on the array from the index of commands
+            }
+            allChips[numChips-1]->compute(); // Perform computation on the last chip
+        }
+
+The code that is blue was used to test if I was getting the right number when I was using compute()
+
+____________________________________________________________________________________
+
+// Search for the chip with ID "O50"
+    for (int i = 0; i < numChips; i++) {
+        if (allChips[i]->getId() == targetId) {
+            targetIndex = i;
+            break;
+        }
+    }
+    
+    // If the chip is found and it is not already the last chip
+    if (targetIndex != -1 && targetIndex != numChips - 1) {
+        // Swap the found chip with the last chip
+        Chip* temp = allChips[targetIndex];
+        allChips[targetIndex] = allChips[numChips - 1];
+        allChips[numChips - 1] = temp;
+        cout << "Moved chip " << targetId << " to the end of the array." << endl;
+    } else if (targetIndex == -1) {
+        cout << "Chip " << targetId << " not found." << endl;
+    } else {
+        cout << "Chip " << targetId << " is already at the end of the array." << endl;
+    }
+
+This was the code that I used to check is O50 was indeed at the end of the array
+____________________________________________________________________________________
+
+ if (chipType == 'A') {
+            double result = input1->getInputValue() + input2->getInputValue();
+            cout << "Computing A(" << input1->getId() << " + " << input2->getId() << ") = " << result << endl;
+            //cout << "Computing A(" << input1->getInputValue() << " + " << input2->getInputValue() << endl;
+            output->setInputValue(result);
+            setInputValue(result);
+        } else if (chipType == 'S') {
+            double result = input1->getInputValue() - input2->getInputValue();
+            cout << "Computing S(" << input1->getId() << " - " << input2->getId() << ") = " << result << endl;
+            output->setInputValue(result);
+            setInputValue(result);
+        } else if (chipType == 'M') {
+            double result = input1->getInputValue() * input2->getInputValue();
+            cout << "Computing M(" << input1->getId() << " * " << input2->getId() << ") = " << result << endl;
+            output->setInputValue(result);
+            setInputValue(result);
+        } else if (chipType == 'D') {
+            double result = input1->getInputValue() / input2->getInputValue();
+            cout << "Computing D(" << input1->getId() << " / " << input2->getId() << ") = " << result << endl;
+            output->setInputValue(result);
+            setInputValue(result);
+        } else if (chipType == 'N') {
+            double result = -input1->getInputValue();
+            cout << "Computing N(-" << input1->getId() << ") = " << result << endl;
+            output->setInputValue(result);
+            setInputValue(result);
+        } 
+
+Once I put in setInputValue(result); in each chipType the code worked.
+Also the cout << "Computing A(" << input1->getId() << " + " << input2->getId() << ") = " << result << endl; helped me check if I was using the right inputs for the code go work.
+
 
 
 
