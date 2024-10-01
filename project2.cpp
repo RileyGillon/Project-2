@@ -89,7 +89,7 @@ public:
         } else if (chipType == 'I') {
             output->setInputValue(getInputValue());
         } else if (chipType == 'O') {
-            cout << "The output value from " << id << " is " << inputValue << endl;
+            cout << "The output value from this circuit is " << inputValue << endl;
         }
     }
 
